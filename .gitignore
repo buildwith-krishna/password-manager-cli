@@ -1,0 +1,9 @@
+__pycache__/
+*.pyc
+*.pyo
+
+# Data files (important for your project)
+*.json
+
+# OS / editor junk
+.DS_Store
