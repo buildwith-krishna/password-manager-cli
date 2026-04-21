@@ -1,7 +1,7 @@
 # 🔐 Password Manager CLI
 
 A command-line password manager built with Python — focused on
-security, clean architecture, and real-world usability.
+real-world backend logic, data handling, and practical usability.
 Built entirely on Termux (Android). No PC. No excuses.
 
 ---
@@ -10,20 +10,23 @@ Built entirely on Termux (Android). No PC. No excuses.
 
 - Cryptographically secure password generation
 - Custom password length (user-controlled)
+- Add and store passwords for different services
+- View saved passwords (protected by master key)
+- Persistent storage using JSON (file-based)
 - Full input validation & error handling
-- Clean modular structure
+- Clean modular CLI structure
 
 ---
 
 ## 🛡️ Why `secrets` over `random`?
 
 Most developers use `random` for password generation.
-That's wrong.
+That's incorrect for security use-cases.
 
-`random` = predictable, pattern-based (PRNG)
-`secrets` = OS-level entropy, cryptographically secure
+`random` → predictable (PRNG)  
+`secrets` → OS-level entropy, cryptographically secure  
 
-For anything security-related, `secrets` is the only correct choice.
+For password generation, `secrets` is the correct choice.
 
 ---
 
@@ -31,29 +34,54 @@ For anything security-related, `secrets` is the only correct choice.
 
 - Language: Python 3
 - Security: `secrets` module
-- Character sets: `string` module
+- Storage: JSON (file-based database)
+- CLI Interaction: Standard input/output
 
 ---
 
 ## 📦 How to Run
 
-git clone https://github.com/buildwith-krishna/password-manager-CLI
-cd password-manager-CLI
-python pass_gen.py
+git clone https://github.com/buildwith-krishna/password-manager-cli  
+cd password-manager-cli  
+python pass_gen.py  
+
+---
+
+## 📋 CLI Menu
+
+1. Password generator  
+2. Add a password  
+3. View all passwords  
+4. Exit  
+
+---
+
+## 🔐 Security Note
+
+- Passwords are stored locally in a JSON file
+- Access is restricted using a master key
+- Current version does NOT use encryption (planned improvement)
 
 ---
 
 ## 🗺️ Roadmap
 
 - [x] Password generator
-- [ ] Save passwords with encryption
-- [ ] Retrieve saved passwords
-- [ ] Master password protection
-- [ ] Full CLI menu system
+- [x] Add a password(JSON)
+- [x] Store passwords (JSON)
+- [x] View passwords (master key protected)
+- [ ] Encrypt stored passwords
+- [ ] Hash master key
+- [ ] Update/Delete password functionality
+- [ ] Export data (CSV/Excel)
+- [ ] Database integration (SQLite/PostgreSQL)
+- [ ] GUI / Web version
 
 ---
 
 ## 👨‍💻 Author
 
 **Krishna Pandey** — [@buildwith-krishna](https://github.com/buildwith-krishna)
-> Building production-focused backend tools from scratch. On mobile.
+
+> Building backend systems from scratch with a focus on logic,
+> structure, and real-world problem solving — even in constrained environments.
