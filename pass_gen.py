@@ -41,58 +41,90 @@ def add_password():
     print("<<-Password_Saved_Successfully->>")
 
 def show_passwords():
-    key = input("Enter master key: ").strip()
-    if key == "8989@key":
-        with open(FILE_NAME, "r") as file:
-            passwords = json.load(file)
+    with open(FILE_NAME, "r") as file:
+        passwords = json.load(file)
 
-        for service, details in passwords.items():
-            print(f"\nService: {service}")
-            print(f" Username: {details['Username']}")
-            print(f" Password: {details['Password']}")
-            print(f" Category: {details['Category']}")
-            print("\n")
-    else:
-        print("Invalid master Key! cannot give you access!.")
+    for service, details in passwords.items():
+        print(f"\nService: {service}")
+        print(f" Username: {details['Username']}")
+        print(f" Password: {details['Password']}")
+        print(f" Category: {details['Category']}")
+        print("\n")
 
-            
-def main():
-    while True:
-        print("\n<<-Password_Manager->>")
-        print("1. Password generator")
-        print("2. Add a password")
-        print("3. View all passwords")
-        print("4. Exit\n")
 
-        user = input("Enter task: ").strip()
+def del_password(): 
+    show_passwords()
+    with open(FILE_NAME, "r") as file:
+        passwords = json.load(file)
 
-        # To get password based on inputs
-        if user == "1":
-            try:
-                length = int(input("Enter password length: ").strip()) 
-                if length <= 0:
-                    print("Length cannot be negative or zero!")
-                    continue
-                password = password_generator(length) # added length parameters
-                print(f"\nGenerated Password: {password}")
-            except ValueError:
-                print("Please enter a valid number.")
+    service = input("Enter service to delete: ").strip()
 
-        elif user == "2":
-            add_password()
-            print("\n")
+    if service in passwords:
+        choice = input("Are you sure, to continue (y/n) ").strip().lower()
+        if choice != "n":
+            del passwords[service]
 
-        elif user == "3":
-            show_passwords()
-
-        elif user == "4":
-            print("Goodbye!")
-            break
-            
+            with open(FILE_NAME, "w") as file:
+                json.dump(passwords, file, indent=4)
+                
+            print("<<-Password has been deleted->>")
         else:
-            print("Invalid input! enter 1 or 4")
+            return
+    elif service == "":
+        print("service cannot be empty!")
 
+    else:
+        print("this service does not exists!")
 
+        
+def main():
+    master_key = input("Enter master key: ").strip()
+    if master_key == "8989@master_key":
+        while True:
+            print("\n## Password_Manager ##")
+            print("1. Password generator")
+            print("2. Add a password")
+            print("3. View all passwords")
+            print("4. Delete a password")
+            print("5. Exit\n")
+
+            user = input("Enter task: ").strip()
+
+            # To get password based on inputs
+            if user == "1":
+                try:
+                    length = int(input("Enter password length: ").strip()) 
+                    if length <= 0:
+                        print("Length cannot be negative or zero!")
+                        continue
+                    password = password_generator(length) # added length parameters
+                    print(f"\nGenerated Password: {password}")
+                except ValueError:
+                    print("Please enter a valid number.")
+
+            elif user == "2":
+                add_password()
+                print("\n")
+
+            elif user == "3":
+                show_passwords()
+                print("\n")
+
+            elif user == "4":
+                del_password()
+                print("\n")
+            
+            elif user == "5":
+                print("Goodbye!\n")
+                break
+            
+            else:
+                print("Invalid input! enter 1 to 5")
+
+    else:
+        print("Invalid master key! Access denied!")
+        return
+        
 if __name__ == "__main__":
     main()
 
