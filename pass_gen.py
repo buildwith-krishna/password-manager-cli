@@ -31,7 +31,7 @@ def add_password():
 
     passwords[service] = {
         "Username" : username,
-        "Password": password,
+        "Password" : password,
         "Category" : "Personal"
     }
 
@@ -76,7 +76,40 @@ def del_password():
     else:
         print("this service does not exists!")
 
-        
+
+def update_password():
+    show_passwords()
+    with open(FILE_NAME, "r") as file:
+        passwords = json.load(file)
+
+    service = input("Enter service: ").strip()
+    if service == "":
+        print("Srvice cannot be empty!")
+        return
+
+    if service in passwords:
+        username = input("Enter new username: ").strip()
+        password = input("Enter new password: ").strip()
+    
+        if username != "" and password != "":
+            passwords[service] = {
+                "Username" : username,
+                "Password" : password,
+                "Category" : "Personal"
+            }
+
+            with open(FILE_NAME, "w") as file:
+                json.dump(passwords, file, indent=4)
+
+            print("<<-Password has been updated->>\n")
+
+        else:
+            print("Entry cannot be empty!")
+            return
+    else:
+        print("This service does not exist!")
+        return
+
 def main():
     master_key = input("Enter master key: ").strip()
     if master_key == "8989@master_key":
@@ -86,7 +119,8 @@ def main():
             print("2. Add a password")
             print("3. View all passwords")
             print("4. Delete a password")
-            print("5. Exit\n")
+            print("5. Update a password")
+            print("6. Exit\n")
 
             user = input("Enter task: ").strip()
 
@@ -113,13 +147,16 @@ def main():
             elif user == "4":
                 del_password()
                 print("\n")
-            
+
             elif user == "5":
+                update_password()
+            
+            elif user == "6":
                 print("Goodbye!\n")
                 break
             
             else:
-                print("Invalid input! enter 1 to 5")
+                print("Invalid input! enter 1 to 6")
 
     else:
         print("Invalid master key! Access denied!")
