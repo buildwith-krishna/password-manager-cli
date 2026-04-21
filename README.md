@@ -1,81 +1,90 @@
 # 🔐 Password Manager CLI
 
-A command-line password manager built with Python — focused on
-real-world backend logic, data handling, and practical usability.
+A command-line password manager built with Python — focused on real-world backend logic, file handling, and practical CLI workflows.  
 Built entirely on Termux (Android). No PC. No excuses.
 
 ---
 
 ## 🚀 Features
 
-- Cryptographically secure password generation
+- Cryptographically secure password generation (`secrets`)
 - Custom password length (user-controlled)
 - Add and store passwords for different services
-- View saved passwords (protected by master key)
+- View all saved passwords
+- Delete passwords with confirmation
+- Master key protection (access control before CLI)
 - Persistent storage using JSON (file-based)
-- Full input validation & error handling
+- Input validation & basic error handling
 - Clean modular CLI structure
 
 ---
 
 ## 🛡️ Why `secrets` over `random`?
 
-Most developers use `random` for password generation.
-That's incorrect for security use-cases.
+Most beginners use `random` for passwords — that’s unsafe.
 
-`random` → predictable (PRNG)  
-`secrets` → OS-level entropy, cryptographically secure  
+- `random` → predictable (PRNG)  
+- `secrets` → cryptographically secure (OS-level entropy)  
 
-For password generation, `secrets` is the correct choice.
+For any security-related functionality, `secrets` is the correct choice.
 
 ---
 
 ## ⚙️ Tech Stack
 
-- Language: Python 3
-- Security: `secrets` module
-- Storage: JSON (file-based database)
-- CLI Interaction: Standard input/output
+- Language: Python 3  
+- Security: `secrets` module  
+- Storage: JSON (file-based)  
+- CLI Interface: Standard input/output  
 
 ---
 
 ## 📦 How to Run
 
-git clone https://github.com/buildwith-krishna/password-manager-cli  
-cd password-manager-cli  
-python pass_gen.py  
+```bash
+git clone https://github.com/buildwith-krishna/password-manager-cli
+cd password-manager-cli
+python pass_gen.py
+```
 
 ---
 
-## 📋 CLI Menu
+## 📋 CLI Flow
+
+1. Enter master key (required to access system)
+
+Then:
 
 1. Password generator  
 2. Add a password  
 3. View all passwords  
-4. Exit  
+4. Delete a password  
+5. Exit  
 
 ---
 
 ## 🔐 Security Note
 
-- Passwords are stored locally in a JSON file
-- Access is restricted using a master key
-- Current version does NOT use encryption (planned improvement)
+- Passwords are stored locally in `passwords.json`  
+- Access is protected via a master key  
+- Current version stores passwords in plain text (no encryption yet)  
 
 ---
 
 ## 🗺️ Roadmap
 
-- [x] Password generator
-- [x] Add a password(JSON)
-- [x] Store passwords (JSON)
-- [x] View passwords (master key protected)
-- [ ] Encrypt stored passwords
-- [ ] Hash master key
-- [ ] Update/Delete password functionality
-- [ ] Export data (CSV/Excel)
-- [ ] Database integration (SQLite/PostgreSQL)
-- [ ] GUI / Web version
+- [x] Password generator  
+- [x] Add passwords  
+- [x] Store passwords (JSON)  
+- [x] View passwords  
+- [x] Delete passwords  
+- [x] Master key protection  
+- [ ] Encrypt stored passwords  
+- [ ] Hash master key  
+- [ ] Search functionality  
+- [ ] Category filtering  
+- [ ] Database integration (SQLite)  
+- [ ] GUI / Web version  
 
 ---
 
@@ -83,5 +92,5 @@ python pass_gen.py
 
 **Krishna Pandey** — [@buildwith-krishna](https://github.com/buildwith-krishna)
 
-> Building backend systems from scratch with a focus on logic,
-> structure, and real-world problem solving — even in constrained environments.
+> Building backend systems step by step with a focus on logic, structure,  
+> and real-world usability — even in constrained environments.
