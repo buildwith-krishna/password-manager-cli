@@ -13,6 +13,7 @@ Built entirely on Termux (Android). No PC. No excuses.
 - View all saved passwords
 - Delete passwords with confirmation
 - Update existing passwords
+- Search passwords by service
 - Master key protection (access control before CLI)
 - Persistent storage using JSON (file-based)
 - Input validation & basic error handling
@@ -59,7 +60,8 @@ Then:
 3. View all passwords
 4. Delete a password
 5. Update a password
-6. Exit
+6. Search a password
+7. Exit
 
 ---
 
@@ -79,10 +81,10 @@ Then:
 - [x] View passwords
 - [x] Delete passwords
 - [x] Update passwords
+- [x] Search functionality
 - [x] Master key protection
 - [ ] Encrypt stored passwords
 - [ ] Hash master key
-- [ ] Search functionality
 - [ ] Category filtering
 - [ ] Database integration (SQLite)
 - [ ] GUI / Web version
