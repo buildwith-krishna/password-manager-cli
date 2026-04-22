@@ -110,6 +110,26 @@ def update_password():
         print("This service does not exist!")
         return
 
+
+def search_password():
+    with open(FILE_NAME, "r") as file:
+        passwords = json.load(file)
+
+    service = input("Enter service: ").strip()
+
+    if service != "":
+        if service in passwords:
+            details = passwords[service]
+            print(f"\nService: {service}")
+            print(f" Username: {details['Username']}")
+            print(f" Password: {details['Password']}")
+            print(f" Category: {details['Category']}")
+        else:
+            print("Service does not exist!")
+    else:
+        print("Service can't be empty!")
+
+
 def main():
     master_key = input("Enter master key: ").strip()
     if master_key == "8989@master_key":
@@ -120,7 +140,8 @@ def main():
             print("3. View all passwords")
             print("4. Delete a password")
             print("5. Update a password")
-            print("6. Exit\n")
+            print("6. Search a password")
+            print("7. Exit\n")
 
             user = input("Enter task: ").strip()
 
@@ -150,13 +171,16 @@ def main():
 
             elif user == "5":
                 update_password()
-            
+
             elif user == "6":
+                search_password()
+            
+            elif user == "7":
                 print("Goodbye!\n")
                 break
             
             else:
-                print("Invalid input! enter 1 to 6")
+                print("Invalid input! enter 1 to 7")
 
     else:
         print("Invalid master key! Access denied!")
