@@ -1,60 +1,92 @@
-🔐 Password Manager CLI
+# 🔐 Password Manager CLI
 
-A command-line password manager built with Python — focused on real-world backend logic, file handling, and practical CLI workflows.
-Built entirely on Termux (Android). No PC. No excuses.
+> A fully encrypted, command-line password manager built in Python — from scratch, on a phone.
 
----
+![Python](https://img.shields.io/badge/Python-3.x-blue?style=flat-square&logo=python)
+![Platform](https://img.shields.io/badge/Platform-Termux%20%7C%20Linux%20%7C%20macOS-green?style=flat-square)
+![Security](https://img.shields.io/badge/Encryption-Fernet%20AES--128-red?style=flat-square)
+![Status](https://img.shields.io/badge/Status-Complete-brightgreen?style=flat-square)
 
-🚀 Features
-
-- Cryptographically secure password generation ("secrets")
-- Custom password length (user-controlled)
-- Add and store passwords for different services
-- View all saved passwords
-- Delete passwords with confirmation
-- Update existing passwords
-- Search passwords by service
-- Master key protection (access control before CLI)
-- Persistent storage using JSON (file-based)
-- Input validation & basic error handling
-- Clean modular CLI structure
+Built entirely on **Termux (Android)**. No PC. No excuses.
 
 ---
 
-🛡️ Why "secrets" over "random"?
+## ✨ Features
 
-Most beginners use "random" for passwords — that’s unsafe.
-
-- "random" → predictable (PRNG)
-- "secrets" → cryptographically secure (OS-level entropy)
-
-For any security-related functionality, "secrets" is the correct choice.
-
----
-
-⚙️ Tech Stack
-
-- Language: Python 3
-- Security: "secrets" module
-- Storage: JSON (file-based)
-- CLI Interface: Standard input/output
+| Feature | Description |
+|---|---|
+| 🔑 **Master Key Auth** | 3-attempt lockout system before access is granted |
+| 🔒 **Fernet Encryption** | All passwords encrypted at rest using AES-128 |
+| 🎲 **Secure Generator** | Cryptographically secure passwords via `secrets` module |
+| 📁 **Persistent Storage** | JSON file-based storage with clean structure |
+| ➕ **Add** | Store credentials for any service |
+| 👁️ **View** | Display all saved passwords (decrypted on-the-fly) |
+| 🗑️ **Delete** | Remove entries with confirmation prompt |
+| ✏️ **Update** | Modify existing credentials |
+| 🔍 **Search** | Find passwords instantly by service name |
+| ✅ **Input Validation** | Handles empty fields and invalid inputs gracefully |
 
 ---
 
-📦 How to Run
+## 🛡️ Security Design
 
+### Encryption
+Every password is encrypted before being written to disk using **Fernet symmetric encryption** from the `cryptography` library:
+
+```
+User Password → f.encrypt() → Encrypted blob stored in JSON
+Encrypted blob → f.decrypt() → Original password shown to user
+```
+
+The Fernet key is derived from your master key at runtime using **SHA-256 hashing** — meaning nothing sensitive is ever stored anywhere.
+
+### Why `secrets` over `random`?
+
+| | `random` | `secrets` |
+|---|---|---|
+| Type | Pseudo-random (PRNG) | Cryptographically secure |
+| Source | Algorithm-based | OS-level entropy |
+| Safe for passwords? | ❌ | ✅ |
+
+### Master Key Lockout
+3 failed attempts → program exits. No brute force.
+
+---
+
+## ⚙️ Tech Stack
+
+- **Language** — Python 3
+- **Encryption** — `cryptography` (Fernet / AES-128)
+- **Password Generation** — `secrets` + `string`
+- **Storage** — JSON (file-based, local)
+- **Interface** — CLI (standard input/output)
+
+---
+
+## 📦 Installation & Usage
+
+```bash
+# Clone the repository
 git clone https://github.com/buildwith-krishna/password-manager-cli
+
+# Navigate into the project
 cd password-manager-cli
+
+# Install dependency
+pip install cryptography
+
+# Run
 python pass_gen.py
+```
 
 ---
 
-📋 CLI Flow
+## 🖥️ CLI Flow
 
-1. Enter master key (required to access system)
+```
+Enter master key: ••••••••••••••
 
-Then:
-
+## Password_Manager ##
 1. Password generator
 2. Add a password
 3. View all passwords
@@ -62,38 +94,39 @@ Then:
 5. Update a password
 6. Search a password
 7. Exit
+```
 
 ---
 
-🔐 Security Note
+## 📁 Project Structure
 
-- Passwords are stored locally in "passwords.json"
-- Access is protected via a master key
-- Current version stores passwords in plain text (no encryption yet)
-
----
-
-🗺️ Roadmap
-
-- [x] Password generator
-- [x] Add passwords
-- [x] Store passwords (JSON)
-- [x] View passwords
-- [x] Delete passwords
-- [x] Update passwords
-- [x] Search functionality
-- [x] Master key protection
-- [ ] Encrypt stored passwords
-- [ ] Hash master key
-- [ ] Category filtering
-- [ ] Database integration (SQLite)
-- [ ] GUI / Web version
+```
+password-manager-cli/
+├── pass_gen.py       # Main application
+├── passwords.json    # Encrypted password storage (auto-created)
+└── README.md
+```
 
 ---
 
-👨‍💻 Author
+## ✅ Completed Scope
 
-Krishna Pandey — "@buildwith-krishna" (https://github.com/buildwith-krishna)
+- [x] Cryptographically secure password generator
+- [x] Add / View / Delete / Update / Search passwords
+- [x] JSON-based persistent storage
+- [x] Master key authentication
+- [x] 3-attempt lockout on wrong master key
+- [x] Fernet encryption on all stored passwords
+- [x] SHA-256 key derivation from master key
+- [x] Input validation and error handling
+- [x] Clean modular code structure
 
-«Building backend systems step by step with a focus on logic, structure,
-and real-world usability — even in constrained environments.»
+**This project is complete as designed.**
+
+---
+
+## 👨‍💻 Author
+
+**Krishna Pandey** — [@buildwith-krishna](https://github.com/buildwith-krishna)
+
+> *"Building backend systems step by step — with focus on logic, structure, and real-world usability. Even from a phone."*
