@@ -1,3 +1,7 @@
+from cryptography.fernet import Fernet
+import base64, hashlib
+
+
 #Contains the passwords 
 FILE_NAME = "passwords.json"
 # for storage use case
@@ -13,7 +17,7 @@ def password_generator(length): # added length parameters
     return password
 
 
-def add_password():
+def add_password(f):
 
     service = input("Enter service: ").strip()
     username = input("Enter Username: ").strip()
@@ -31,7 +35,7 @@ def add_password():
 
     passwords[service] = {
         "Username" : username,
-        "Password" : password,
+        "Password" : f.encrypt(password.encode()).decode(),
         "Category" : "Personal"
     }
 
@@ -40,20 +44,21 @@ def add_password():
 
     print("<<-Password_Saved_Successfully->>")
 
-def show_passwords():
+def show_passwords(f):
     with open(FILE_NAME, "r") as file:
         passwords = json.load(file)
 
     for service, details in passwords.items():
         print(f"\nService: {service}")
         print(f" Username: {details['Username']}")
-        print(f" Password: {details['Password']}")
+        decrypted = f.decrypt(details['Password'].encode()).decode()
+        print(f" Password: {decrypted}")
         print(f" Category: {details['Category']}")
         print("\n")
 
 
-def del_password(): 
-    show_passwords()
+def del_password(f): 
+    show_passwords(f)
     with open(FILE_NAME, "r") as file:
         passwords = json.load(file)
 
@@ -77,8 +82,8 @@ def del_password():
         print("this service does not exists!")
 
 
-def update_password():
-    show_passwords()
+def update_password(f):
+    show_passwords(f)
     with open(FILE_NAME, "r") as file:
         passwords = json.load(file)
 
@@ -94,7 +99,7 @@ def update_password():
         if username != "" and password != "":
             passwords[service] = {
                 "Username" : username,
-                "Password" : password,
+                "Password": f.encrypt(password.encode()).decode(),
                 "Category" : "Personal"
             }
 
@@ -111,7 +116,7 @@ def update_password():
         return
 
 
-def search_password():
+def search_password(f):
     with open(FILE_NAME, "r") as file:
         passwords = json.load(file)
 
@@ -122,7 +127,8 @@ def search_password():
             details = passwords[service]
             print(f"\nService: {service}")
             print(f" Username: {details['Username']}")
-            print(f" Password: {details['Password']}")
+            decrypted = f.decrypt(details['Password'].encode()).decode()
+            print(f" Password: {decrypted}")
             print(f" Category: {details['Category']}")
         else:
             print("Service does not exist!")
@@ -130,9 +136,28 @@ def search_password():
         print("Service can't be empty!")
 
 
+def get_key(master_key):
+    key = hashlib.sha256(master_key.encode()).digest()
+    key = base64.urlsafe_b64encode(key)
+    return Fernet(key)
+
+
 def main():
     master_key = input("Enter master key: ").strip()
+    if master_key != "8989@master_key":
+        print("Incorrect Key! Two attempts left.")
+        
+        master_key = input("Enter master key: ").strip()
+        if master_key != "8989@master_key":
+            print("Incorrect Key! Only 1 attempt left.")
+
+            master_key = input("Enter master key: ").strip()
+            if master_key != "8989@master_key":
+                print("Incorrect Key! Cannot proceed further.")
+                return
+                
     if master_key == "8989@master_key":
+        f = get_key(master_key)
         while True:
             print("\n## Password_Manager ##")
             print("1. Password generator")
@@ -158,22 +183,22 @@ def main():
                     print("Please enter a valid number.")
 
             elif user == "2":
-                add_password()
+                add_password(f)
                 print("\n")
 
             elif user == "3":
-                show_passwords()
+                show_passwords(f)
                 print("\n")
 
             elif user == "4":
-                del_password()
+                del_password(f)
                 print("\n")
 
             elif user == "5":
-                update_password()
+                update_password(f)
 
             elif user == "6":
-                search_password()
+                search_password(f)
             
             elif user == "7":
                 print("Goodbye!\n")
